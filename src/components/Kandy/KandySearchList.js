@@ -48,9 +48,6 @@ export const KandySearchList = ({searchTermState}) => {
     )
 
     const isAddressArray = (product) => {
-        // const searchedLocations = LocationsList.filter(location => location.id === product?.productLocations?.locationId)
-        //try to use .find within the map
-
         if (Array.isArray(product.productLocations)) {
             return product.productLocations.map((prodlocation) => {
                 const locationMatch = LocationsList.find((location) => location.id === prodlocation.locationId)
@@ -68,8 +65,7 @@ export const KandySearchList = ({searchTermState}) => {
                 return <section key={product.id} className="product">
                      <header>{product.name}</header>
                             <div>Price: ${product.price}</div>
-                            <button type="button" onClick={ () => window.alert(`Available at:\n${isAddressArray(product)}`)}>SugarRush</button>
-                            <Link to={`/locations/`}>Show me Where</Link>
+                            <Link to="" onClick={ () => window.alert(`Available at:\n${isAddressArray(product)}`)}>Show me Where</Link>
                 </section>
             }
         )}
@@ -77,4 +73,3 @@ export const KandySearchList = ({searchTermState}) => {
 }
 
 
-//TRY TO FIGURE OUT STRETCH GOAL HERE. I feel like I need to filter and map again but that seems counterintuitive
