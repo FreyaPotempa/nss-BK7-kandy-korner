@@ -25,8 +25,13 @@ export const Register = (props) => {
                         id: createdUser.id,
                         staff: createdUser.isStaff
                     }))
-
+                    const localKandyUser = localStorage.getItem("kandy_user")
+                    const localKandyUserObject = JSON.parse(localKandyUser)
+                    if (localKandyUserObject.staff) {
+                        navigate("/employeehire")
+                    } else {
                     navigate("/")
+                    }
                 }
             })
     }

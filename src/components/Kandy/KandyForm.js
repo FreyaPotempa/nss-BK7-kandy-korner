@@ -1,17 +1,21 @@
 import { click } from "@testing-library/user-event/dist/click";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const KandyForm = () => {
-    /*TODO:
-    Create a form for creating a new product. Only employees can add new products. There should be a form field for the following properties.
 
-    Product name
-    Product type
-    Price
+    const [prodTypes, setProdTypes] = useState([])
 
-Once the POST operation is complete, navigate the employee to the listing of all products.
-*/
+    useEffect(
+        () => {
+            fetch(`http://localhost:8088/productTypes`)
+            .then(res => res.json())
+            .then((data) => {
+                setProdTypes(data)
+            })
+        },
+        []
+    )
 
     const [product, update] = useState({
         name: "",
@@ -91,9 +95,7 @@ Once the POST operation is complete, navigate the employee to the listing of all
                     }
                     >
                         <option value="0">Choose</option>
-                        <option value="1">Chocolate</option>
-                        <option value="2">Gummy</option>
-                        <option value="3">Hard Candy</option>
+                        {prodTypes.map((prodType) => <option key={prodType.id} value={prodType.id}>{prodType.category}</option>)}
                     </select>
                 </div>
             </fieldset>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { LocationsList } from "../tickets/Locations"
 
 
 
@@ -11,7 +12,7 @@ export const KandySearchList = ({searchTermState}) => {
 
     const [candies, setProducts] = useState([])
     const [filteredProducts, setFiltered] = useState([])
-
+    const [LocationsList, setLocations] = useState([])
 
     useEffect(
         () => {
@@ -19,6 +20,17 @@ export const KandySearchList = ({searchTermState}) => {
             .then(res => res.json())
             .then((productArray) => {
                 setProducts(productArray)
+            })
+        },
+        []
+    )
+
+    useEffect(
+        () => {
+            fetch(`http://localhost:8088/locations`)
+            .then(res => res.json())
+            .then((locationArr) => {
+                setLocations(locationArr)
             })
         },
         []
@@ -35,18 +47,19 @@ export const KandySearchList = ({searchTermState}) => {
         [searchTermState]
     )
 
-    // const isAddressArray = (product) => {
-    //     if (Array.isArray(product.productLocations)) {
-    //         return product.productLocations.map(
-    //             (location) => {
-    //                 return `${location.locationId}`
-    //             }
-    //         )
-    //     } else {
-    //         console.log(product.productLocation)
-    //         return `${product.productLocation.locationId}`
-    //     }
-    // }
+    const isAddressArray = (product) => {
+        // const searchedLocations = LocationsList.filter(location => location.id === product?.productLocations?.locationId)
+        //try to use .find within the map
+
+        if (Array.isArray(product.productLocations)) {
+            return product.productLocations.map((prodlocation) => {
+                const locationMatch = LocationsList.find((location) => location.id === prodlocation.locationId)
+             return `${locationMatch.name}`}).join(" & ")
+        } else {
+            const locationName = LocationsList.find((location) => location.id === product.productLocations.locationId)
+            return `${locationName.name}`
+        }
+    }
 
     return <>
         <h2>Matched Candy</h2>
@@ -55,7 +68,7 @@ export const KandySearchList = ({searchTermState}) => {
                 return <section key={product.id} className="product">
                      <header>{product.name}</header>
                             <div>Price: ${product.price}</div>
-                            <button type="button" onClick={ () => window.alert(`My Location is a stretch goal`)}>SugarRush</button>
+                            <button type="button" onClick={ () => window.alert(`Available at:\n${isAddressArray(product)}`)}>SugarRush</button>
                             <Link to={`/locations/`}>Show me Where</Link>
                 </section>
             }
