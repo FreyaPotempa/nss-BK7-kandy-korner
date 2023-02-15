@@ -24,7 +24,8 @@ return (
                     locations.map(
                         (location) => {
                             return <section key={location.id} className="location">
-                                <header>Address: {location.address}</header>
+                                <header>{location.name}</header>
+                                <div>Address: {location.address}</div>
                                 <div>Size: {location.sqFootage} square feet</div>
 
                             </section>

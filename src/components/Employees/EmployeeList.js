@@ -6,7 +6,7 @@ export const EmployeeList = () => {
 
     useEffect(
         () => {
-            fetch(`http://localhost:8088/users?isStaff=true`)
+            fetch(`http://localhost:8088/employees?_expand=user&_expand=location`)
             .then(res => res.json())
             .then((staff) => {
                 setEmployees(staff)
@@ -21,8 +21,9 @@ export const EmployeeList = () => {
             {
                 employees.map(employee => {
                     return <section key={employee.id}>
-                    <header>{employee.fullName}</header>
-                    <div>{employee.email}</div>
+                    <header>{employee?.user?.fullName}</header>
+                    <div>{employee?.user?.email}</div>
+                    <div>{employee?.location?.name}</div>
                     </section>
                 })
             }
@@ -31,5 +32,3 @@ export const EmployeeList = () => {
     )
 }
 
-//START HERE
-//https://github.com/nashville-software-school/client-side-mastery/blob/master/book-7-honey-rae-repairs/chapters/KK_EMPLOYEES.md
