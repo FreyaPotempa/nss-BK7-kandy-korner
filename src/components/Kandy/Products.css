@@ -1,0 +1,19 @@
+.products {
+    display: flex;
+    flex-direction: column;
+}
+
+.product {
+    background-color: rgba(191, 173, 107, 0.711);
+    border: 1px dashed rgb(69, 59, 18);
+    padding: 0.7rem;
+    margin: 0.5rem 0;
+}
+
+header {
+    font-weight: bold;
+}
+
+.candy_search {
+    width: 75%;
+}
