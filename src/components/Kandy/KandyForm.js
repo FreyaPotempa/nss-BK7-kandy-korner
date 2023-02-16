@@ -5,6 +5,17 @@ import { useNavigate } from "react-router-dom";
 export const KandyForm = () => {
 
     const [prodTypes, setProdTypes] = useState([])
+    const [products, setProducts] = useState([])
+
+    useEffect(
+        () => {
+            fetch('')
+            .then(res => res.json())
+            .then((data) => {
+                setProducts(data)
+            })
+        }, []
+    )
 
     useEffect(
         () => {
@@ -16,7 +27,8 @@ export const KandyForm = () => {
         },
         []
     )
-
+    
+ 
     const [product, update] = useState({
         name: "",
         price: "",
@@ -45,7 +57,19 @@ export const KandyForm = () => {
             navigate("/products")
         })
     }
+        //PROBLEM: Gettin' lost in tha sauce
+    //     const saveNewProductLocation = (event) => {
+    //         const prodLocations = document.querySelectorAll("input[name='location']:checked")
+    //         const setProductId = products.length + 1
 
+    //         for (const newProdLocation of prodLocations) {
+    //             const newProductLocationToAPI = {
+    //             productId: setProductId,
+    //             locationId: ""
+    //         }
+    //         console.log(newProductLocationToAPI)
+    //     }
+    // }
 
 
     return (
@@ -97,6 +121,17 @@ export const KandyForm = () => {
                         <option value="0">Choose</option>
                         {prodTypes.map((prodType) => <option key={prodType.id} value={prodType.id}>{prodType.category}</option>)}
                     </select>
+                {/* <input 
+                required autoFocus
+                type="checkbox"
+                className="form-location"
+                value={productLocations}
+                onChange={
+                    (e) => {
+                        const check = {...}
+                    }
+                }
+                 */}
                 </div>
             </fieldset>
             <button type="button"

@@ -2,6 +2,7 @@ import { Outlet, Route, Routes } from "react-router-dom"
 import { LocationsList } from "../tickets/Locations"
 import { KandySearch } from "../Kandy/KandySearch"
 import { KandyContainer } from "../Kandy/KandyContainer"
+import { Purchases } from "../Kandy/Purchases"
 
 
 export const CustomerViews = () => {
@@ -16,6 +17,8 @@ export const CustomerViews = () => {
 	}>
 		<Route path="locations" element={ <LocationsList /> } />
 		<Route path="kandySearch" element={ <KandyContainer /> } />
+		<Route path="purchases" element={ <Purchases /> } />
+
 
 	</Route>
 
