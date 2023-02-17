@@ -155,10 +155,6 @@ export const KandyForm = () => {
                                 const copyLocations = copy.filter(copyLocation => copyLocation !== parseInt(e.target.value))
                                 setNewLocationsIds(copyLocations) 
                             }
-
-                            // if (copy.includes(parseInt(e.target.value))) {
-                                
-                            // }
                         }
         
                         } />{location.name}</Fragment>)}
