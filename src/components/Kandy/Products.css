@@ -17,3 +17,8 @@ header {
 .candy_search {
     width: 75%;
 }
+
+.locations {
+    display: flex;
+    flex-direction: row;
+}

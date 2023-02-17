@@ -1,11 +1,13 @@
 import { click } from "@testing-library/user-event/dist/click";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const KandyForm = () => {
 
     const [prodTypes, setProdTypes] = useState([])
     const [products, setProducts] = useState([])
+    const [locations, setLocations] = useState([])
+    const [newLocationIds, setNewLocationsIds] = useState([])
 
     useEffect(
         () => {
@@ -14,6 +16,16 @@ export const KandyForm = () => {
             .then((data) => {
                 setProducts(data)
             })
+        }, []
+    )
+
+    useEffect(
+        () => {
+            fetch(`http://localhost:8088/locations`)
+                .then(res => res.json())
+                .then((data) => {
+                    setLocations(data)
+                })
         }, []
     )
 
@@ -53,23 +65,30 @@ export const KandyForm = () => {
         body: JSON.stringify(productToSendToAPI)
     })
         .then(res => res.json())
-        .then(() => {
+        .then((res) => {
+            const productId = res.id
+            const prodLocations = newLocationIds
+
+            for (const newProdLocation of prodLocations) {
+                const newProductLocationToAPI = {
+                    productId: productId,
+                    locationId: newProdLocation
+                }
+                fetch(`http://localhost:8088/productLocations`,{
+                    method: 'POST', 
+                    headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProductLocationToAPI)})
+                .then(res => res.json())
+                .then(() => {
+
+                })
+            }
+
             navigate("/products")
         })
     }
-        //PROBLEM: Gettin' lost in tha sauce
-    //     const saveNewProductLocation = (event) => {
-    //         const prodLocations = document.querySelectorAll("input[name='location']:checked")
-    //         const setProductId = products.length + 1
-
-    //         for (const newProdLocation of prodLocations) {
-    //             const newProductLocationToAPI = {
-    //             productId: setProductId,
-    //             locationId: ""
-    //         }
-    //         console.log(newProductLocationToAPI)
-    //     }
-    // }
 
 
     return (
@@ -100,7 +119,7 @@ export const KandyForm = () => {
                     onChange={
                         (e) => {
                             const num = {...product}
-                            num.price = e.target.value
+                            num.price = parseInt(e.target.value)
                             update(num)
                         }
                     } />
@@ -121,17 +140,29 @@ export const KandyForm = () => {
                         <option value="0">Choose</option>
                         {prodTypes.map((prodType) => <option key={prodType.id} value={prodType.id}>{prodType.category}</option>)}
                     </select>
-                {/* <input 
-                required autoFocus
-                type="checkbox"
-                className="form-location"
-                value={productLocations}
-                onChange={
-                    (e) => {
-                        const check = {...}
-                    }
-                }
-                 */}
+                    <div className="locations">
+                        <label htmlFor="location">Available at:</label>
+                        {locations.map((location) => <Fragment key={location.id}><input 
+                        type="checkbox" 
+                        value={location.id}
+                        onChange={
+                        (e) => {
+                            const copy = [...newLocationIds]
+                            if ( !copy.includes(parseInt(e.target.value))) {
+                            copy.push(parseInt(e.target.value)) 
+                            setNewLocationsIds(copy)
+                            } else {
+                                const copyLocations = copy.filter(copyLocation => copyLocation !== parseInt(e.target.value))
+                                setNewLocationsIds(copyLocations) 
+                            }
+
+                            // if (copy.includes(parseInt(e.target.value))) {
+                                
+                            // }
+                        }
+        
+                        } />{location.name}</Fragment>)}
+                    </div>
                 </div>
             </fieldset>
             <button type="button"

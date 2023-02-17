@@ -36,32 +36,21 @@ export const EmployeeList = () => {
         []
     )
 
-    //DOESN'T WORK: I THINK BECAUSE I NEED A USEEFFECT LIKE IN TICKETS EDIT (SEE UPDATE TICKET)
-//    const removeStaffFromUser = (employee) => {
-    
-//     const staffUserObject = users.find(user => user.id === employee.userId)
-//     updateUser(staffUserObject)
-//     staffUserObject.isStaff = false
-//     console.log(user)
-    
-//     return fetch(`http://localhost:8088/users/${user.id}`, {
-//     method: "PATCH",
-//     headers: {
-//         "Content-Type": "application/json"
-//     },
-//         body: JSON.stringify(user)})
-//     .then(res => res.json())
-//     .then(() => {
-    
-//     })
-
-//     }
-
 
     const deleteButton = (employee) => {
-            fetch(`http://localhost:8088/employees/${employee.id}`, {
-                method: "DELETE"
-            })
+        const staffUser = users.find(user => user.id === employee.userId)
+        staffUser.isStaff = false
+    
+        return fetch(`http://localhost:8088/users/${staffUser.id}`, {
+        method: "PATCH",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify(staffUser)})
+    .then(res => res.json())
+    .then( fetch(`http://localhost:8088/employees/${employee.id}`, {
+            method: "DELETE"
+            }) )
             .then(() => {
                 getAllEmployees()
             })
@@ -78,7 +67,6 @@ export const EmployeeList = () => {
                     <button type="button"
                     onClick={() => {
                         deleteButton(employee)
-                        //removeStaffFromUser(employee)
                         }}>Fire Employee</button>
                     </section>
                 })

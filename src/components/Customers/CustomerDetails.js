@@ -24,11 +24,12 @@ export const CustomerDetails = () => {
     
     const handleSaveButtonClick = () => {
         return fetch(`http://localhost:8088/customers/${customer.id}`, {
-            method: "PUT",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(customer)
+            //create new object with just the loyaltyNumber because that's the only line you want to change. Can't use dot notation in the request because it's just a string
+            body: JSON.stringify({ loyaltyNumber: customer.loyaltyNumber })
         })
         .then(res => res.json())
         .then(() => {
@@ -48,7 +49,7 @@ export const CustomerDetails = () => {
             onChange={
                 (evt) => {
                     const num = {...customer}
-                    num.loyaltyNumber = evt.target.value
+                    num.loyaltyNumber = parseInt(evt.target.value)
                     updateCustomer(num)
                 }
             } />
