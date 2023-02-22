@@ -10,6 +10,7 @@ export const CustomerDetails = () => {
         loyaltyNumber: 0
     })
 
+    //pass the parameter into the function of the fetch calls
     useEffect(
         () => {
             fetch(`http://localhost:8088/customers?_expand=user&userId=${customerId}`)
